@@ -12,6 +12,8 @@
     <!-- Content here -->
     <h3>게시판</h3>
 
+
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -19,29 +21,24 @@
             <li class="breadcrumb-item active" aria-current="page">Data</li>
         </ol>
     </nav>
-
+<!--    <div th:each="obj :${list}">
+        <span th:text="${obj.getTitle()}"></span>
+    </div>-->
     <table class="table table-sm">
         <thead>
         <tr>
             <th scope="col" style="width: 70%">제목</th>
             <th scope="col" style="width: 15%">글쓴이</th>
+            <th scope="col" style="width: 15%">조회수</th>
             <th scope="col" style="width: 15%">입력시간</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
+        <tr th:each="data: ${list}">
+            <td th:text="${data.getTitle()}"></td>
+            <td th:text="${data.getUserId()}"></td>
+            <td th:text="${data.getHitCnt()}"></td>
+            <td th:text="${data.getUpdateTime()}"></td>
         </tr>
         </tbody>
     </table>

@@ -7,13 +7,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
 public class BoardTest {
-
 
     @Autowired
     BoardService boardService;
@@ -30,7 +33,11 @@ public class BoardTest {
         }
 
 
-        List<BoardArticleDto> list = boardService.selectList(10, 1);
+        Pageable pageable = PageRequest.of(1, 10).toOptional().orElseThrow();
+        List<BoardArticleDto> list = boardService.selectList(pageable);
+
+
+        System.out.println("시스템로그 [ list.size()]: " + list.size());
 
         for(BoardArticleDto o: list){
             System.out.println("시스템로그 [o.toString()]: " + o.toString());

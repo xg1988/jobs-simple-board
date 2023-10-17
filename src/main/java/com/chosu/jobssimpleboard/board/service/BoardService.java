@@ -31,7 +31,7 @@ public class BoardService {
 
     public void saveBoard(String title, String content, String username, String localIp) {
 
-        boardArticleDtoRepository.save(BoardArticleDto.builder()
+        BoardArticleDto boardArticleDto = boardArticleDtoRepository.saveAndFlush(BoardArticleDto.builder()
                         .contents(content)
                         .hitCnt(0)
                         .title(title)
