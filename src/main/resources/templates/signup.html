@@ -15,23 +15,24 @@
 
     <div class="mb-3">
         <label for="userId" class="form-label">사용자 ID</label>
-        <input type="text" class="form-control" id="userId" placeholder="2자 이상의 id">
+        <input type="text" class="form-control" id="userId" name="userId" placeholder="2자 이상의 id">
         <label for="password" class="form-label">사용자 비밀번호</label>
-        <input type="password" class="form-control" id="password" placeholder="2자 이상의 비밀번호">
+        <input type="password" class="form-control" id="password" name="password" placeholder="2자 이상의 비밀번호">
         <label for="username" class="form-label">사용자 이름</label>
-        <input type="text" class="form-control" id="username" placeholder="사용자 이름">
+        <input type="text" class="form-control" id="username" name="name" placeholder="사용자 이름">
         <label for="email" class="form-label">사용자 email 주소 </label>
-        <input type="email" class="form-control" id="email" placeholder="사용자 email 주소">
+        <input type="email" class="form-control" id="email" name="email" placeholder="사용자 email 주소">
 
         <label for="roleSelect" class="form-label">사용자 역할 선택</label>
-        <select id="roleSelect" class="form-select" aria-label="역할 선택">
+        <select id="roleSelect" class="form-select" aria-label="역할 선택" name="role">
             <option selected>역할을 선택해주세요.</option>
             <option value="USER">사용자</option>
             <option value="ADMIN">관리자</option>
         </select>
+
+
         <button type="submit" class="btn">회원가입</button>
         <a class="btn btn-light" href="/" role="button">취소</a>
-
     </div>
     </form>
 </div>

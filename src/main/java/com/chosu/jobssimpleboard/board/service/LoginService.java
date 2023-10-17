@@ -20,6 +20,7 @@ public class LoginService implements UserDetailsService {
     private UserDtoRepository userDtoRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
     public UserDto signup(
             String userId
             , String password
@@ -49,6 +50,23 @@ public class LoginService implements UserDetailsService {
                         //.role("ROLE_"+role)
                         .role(role) // hasAuthority를 사용하게 때문에 prefix 제외
                         .build());
+    }
+
+    public UserSecurityDto signup(UserDto userDto) throws Exception {
+        /**
+         * 회원 가입 조건 체크
+         */
+
+        /**
+         * 중복 회원가입 체크
+         */
+
+        Optional<UserDto> checkUserDto = userDtoRepository.findById(userDto.getUserId());
+        if(checkUserDto.isPresent()){
+            throw new Exception("이미 존재하는 아이디 입니다.");
+        }
+        userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+        return new UserSecurityDto(userDtoRepository.save(userDto));
     }
 
 

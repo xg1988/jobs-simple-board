@@ -9,14 +9,17 @@
 </head>
 <body>
 <div class="container">
+
     <!-- Content here -->
     <h3>시작페이지</h3>
     <br/>
-    <a class="btn btn-light" href="/login" role="button">로그인</a>
+    <div th:if="${userDto?.name}"><span th:text="${userDto.name}" style="color: blue; font-weight: bold"></span> 회원가입 완료</div>
     <br/>
-    <a class="btn btn-light" href="/signup" role="button">회원가입</a>
+    <a class="btn btn-light btn-sm" href="/login" role="button">로그인</a>
     <br/>
-    <a class="btn btn-light" href="/board" role="button">게시판 바로가기</a>
+    <a class="btn btn-light btn-sm" href="/signup" role="button">회원가입</a>
+    <br/>
+    <a class="btn btn-light btn-sm" href="/board" role="button">게시판 바로가기</a>
 </div>
 
 </body>
