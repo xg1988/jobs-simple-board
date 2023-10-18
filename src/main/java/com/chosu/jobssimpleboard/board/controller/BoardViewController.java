@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +32,23 @@ public class BoardViewController {
 
 
     @GetMapping(value = "/board")
-    public String board(Model model, Pageable pageable){
-        List<BoardArticleDto> list = boardService.selectList(pageable);
+    public String board(Model model, @PageableDefault(size = 10) Pageable pageable){
+        Page<BoardArticleDto> list = boardService.selectList(pageable);
+
+        int totalPages = list.getTotalPages();
+        int totalElements = (int) list.getTotalElements();
+        int pageNumber = list.getPageable().getPageNumber();
+        int pageSize = list.getPageable().getPageSize();
+        log.info("totalPages >> {}", totalPages);
+        log.info("totalElements >> {}", totalElements);
+        log.info("pageNumber >> {}", pageNumber);
+        log.info("pageSize >> {}", pageSize);
+
+
         model.addAttribute("list", list);
+        model.addAttribute("totalPages", totalPages-1);
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("pageSize", pageSize);
         return "board";
     }
 

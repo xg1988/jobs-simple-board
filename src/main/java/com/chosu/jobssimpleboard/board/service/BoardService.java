@@ -8,9 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -20,13 +22,12 @@ public class BoardService {
 
     private BoardArticleDtoRepository boardArticleDtoRepository;
 
-    public List<BoardArticleDto> selectList(Pageable pageable){
+    public Page<BoardArticleDto> selectList(Pageable pageable){
+
         log.info("selectList size >> {}", pageable.getPageSize());
         log.info("selectList page >> {}", pageable.getPageNumber());
 
-        Page<BoardArticleDto> list = boardArticleDtoRepository.findAll(pageable);
-
-        return list.stream().toList();
+        return boardArticleDtoRepository.findAllByOrderByIdDesc(pageable);
     }
 
     public void saveBoard(String title, String content, String username, String localIp) {

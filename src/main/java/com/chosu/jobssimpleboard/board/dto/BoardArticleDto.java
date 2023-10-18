@@ -16,13 +16,13 @@ import java.time.LocalDateTime;
 @Table(name="simple_board_info")
 public class BoardArticleDto {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
     private String contents;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "userId")
     private String userId;
     @Column(nullable = false)
     private String localIp;

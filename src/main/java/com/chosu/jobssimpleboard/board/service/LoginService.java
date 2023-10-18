@@ -44,7 +44,7 @@ public class LoginService implements UserDetailsService {
         return userDtoRepository.save(
                 UserDto.builder()
                         .email(email)
-                        .name(name)
+                        .username(name)
                         .password(bCryptPasswordEncoder.encode(password)) // bCryptPasswordEncoder 를 사용한 암호화
                         .userId(userId)
                         //.role("ROLE_"+role)

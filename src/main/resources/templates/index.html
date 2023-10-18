@@ -13,7 +13,7 @@
     <!-- Content here -->
     <h3>시작페이지</h3>
     <br/>
-    <div th:if="${userDto?.name}"><span th:text="${userDto.name}" style="color: blue; font-weight: bold"></span> 회원가입 완료</div>
+    <div th:if="${userDto?.username}"><span th:text="${userDto.username}" style="color: blue; font-weight: bold"></span> 회원가입 완료</div>
     <br/>
     <a class="btn btn-light btn-sm" href="/login" role="button">로그인</a>
     <br/>

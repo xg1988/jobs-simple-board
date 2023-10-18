@@ -27,18 +27,18 @@
     <table class="table table-sm">
         <thead>
         <tr>
-            <th scope="col" style="width: 70%">제목</th>
+            <th scope="col" style="width: 60%">제목</th>
             <th scope="col" style="width: 15%">글쓴이</th>
-            <th scope="col" style="width: 15%">조회수</th>
+            <th scope="col" style="width: 10%">조회수</th>
             <th scope="col" style="width: 15%">입력시간</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="data: ${list}">
-            <td th:text="${data.getTitle()}"></td>
+            <td th:text="|[${data.getId()}] ${data.getTitle()}|"></td>
             <td th:text="${data.getUserId()}"></td>
             <td th:text="${data.getHitCnt()}"></td>
-            <td th:text="${data.getUpdateTime()}"></td>
+            <td th:text="${#temporals.format(data.getUpdateTime(), 'yyyy.MM.dd HH:mm:ss')}"></td>
         </tr>
         </tbody>
     </table>
@@ -52,26 +52,21 @@
         <div class="col">
             <!--paging-->
             <nav aria-label="Page navigation example">
-                <ul class="pagination pagination-sm justify-content-center">
+                <ul class="pagination pagination-sm justify-content-center" >
+                    <th:block th:each="num: ${#numbers.sequence(0, totalPages)}">
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
+                        <a class="page-link"
+                           th:classappend="${pageNumber ==numStat.count -1} ? 'active' : ''"
+                           th:href="@{'/board?page='+${numStat.count -1}+'&size=' + ${pageSize}}"
+                           th:text="${numStat.count}">
                         </a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
+                    </th:block>
                 </ul>
             </nav>
         </div>
         <div class="col">
             <a class="btn btn-light btn-sm" href="/write" role="button">글쓰기</a>
-
         </div>
     </div>
 </div>
