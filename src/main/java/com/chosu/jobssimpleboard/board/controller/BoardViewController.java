@@ -2,9 +2,11 @@ package com.chosu.jobssimpleboard.board.controller;
 
 
 import com.chosu.jobssimpleboard.board.dto.BoardArticleDto;
+import com.chosu.jobssimpleboard.board.dto.BoardModifyDto;
 import com.chosu.jobssimpleboard.board.dto.BoardWriteDto;
 import com.chosu.jobssimpleboard.board.service.BoardService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,9 +33,9 @@ public class BoardViewController {
         return "index";
     }
 
-
     @GetMapping(value = "/board")
     public String board(Model model, @PageableDefault(size = 10) Pageable pageable){
+
         Page<BoardArticleDto> list = boardService.selectList(pageable);
 
         int totalPages = list.getTotalPages();
@@ -44,12 +47,22 @@ public class BoardViewController {
         log.info("pageNumber >> {}", pageNumber);
         log.info("pageSize >> {}", pageSize);
 
-
         model.addAttribute("list", list);
         model.addAttribute("totalPages", totalPages-1);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("pageSize", pageSize);
         return "board";
+    }
+
+    @GetMapping(value = "/detail/{id}")
+    public String boardDetail(Model model, Principal principal, @PathVariable Long id){
+        log.info("id >> {}" , id);
+        log.info("principal.getName() >> {}" , principal.getName());
+
+        BoardArticleDto boardArticleDto = boardService.select(id);
+        model.addAttribute("boardArticleDto" , boardArticleDto);
+        model.addAttribute("sessionUserId", principal.getName());
+        return "detail";
     }
 
     @PostMapping(value = "/board")
@@ -59,7 +72,7 @@ public class BoardViewController {
         String title = boardWriteDto.getTitle();
         String content = boardWriteDto.getContents();
         String userId = principal.getName();
-        String localIp = httpServletRequest.getLocalAddr();
+        String localIp = httpServletRequest.getRemoteAddr();
 
         log.info("saveBoard boardWriteDto >>{}", boardWriteDto);
         log.info("saveBoard title >>{}", title);
@@ -72,8 +85,34 @@ public class BoardViewController {
         return "redirect:/board";
     }
 
-    @GetMapping(value = "/write")
+    @GetMapping(value ="/write")
     public String write(){
         return "write";
+    }
+    @GetMapping(value ="/modify/{id}")
+    public String modify(Model model, @PathVariable Long id){
+        if(id != null){
+            BoardArticleDto boardArticleDto = boardService.select(id);
+            model.addAttribute("boardArticleDto", boardArticleDto);
+        }
+        return "modify";
+    }
+
+    @PostMapping(value ="/modify")
+    public String modifyBoard(Model model, BoardModifyDto boardModifyDto){
+        log.info("modifyBoard post called");
+        boardService.modifyBoard(boardModifyDto);
+        return "redirect:/board";
+    }
+
+    @GetMapping(value ="/delete/{id}")
+    public String delete(Model model, @PathVariable Long id){
+        boardService.delete(id);
+        return "redirect:/board";
+    }
+
+    @GetMapping(value = "/type")
+    public String type(){
+        return "type";
     }
 }

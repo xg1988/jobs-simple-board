@@ -35,7 +35,9 @@
         </thead>
         <tbody>
         <tr th:each="data: ${list}">
-            <td th:text="|[${data.getId()}] ${data.getTitle()}|"></td>
+            <td >
+                <a th:href="@{'/detail/' + ${data.getId()}}" th:text="|[${data.getId()}] ${data.getTitle()}|"></a>
+            </td>
             <td th:text="${data.getUserId()}"></td>
             <td th:text="${data.getHitCnt()}"></td>
             <td th:text="${#temporals.format(data.getUpdateTime(), 'yyyy.MM.dd HH:mm:ss')}"></td>
@@ -44,6 +46,10 @@
     </table>
 
 
+    <div class="mb-3">
+        <a class="btn btn-light btn-sm" href="/" role="button">메인</a>
+        <a class="btn btn-light btn-sm" href="/write" role="button">글쓰기</a>
+    </div>
 
     <div class="row">
         <div class="col">
@@ -66,7 +72,7 @@
             </nav>
         </div>
         <div class="col">
-            <a class="btn btn-light btn-sm" href="/write" role="button">글쓰기</a>
+
         </div>
     </div>
 </div>

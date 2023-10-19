@@ -14,16 +14,25 @@
         <h3>게시판 상세조회</h3>
 
         <div class="mb-3">
-            <label for="title" class="form-label">제목</label>
-            <input type="text" class="form-control" id="title" placeholder="제목">
-        </div>
-        <div class="mb-3">
-            <label for="content" class="form-label">내용</label>
-            <textarea class="form-control" id="content" rows="10" placeholder="내용을 작성해주세요.."></textarea>
+           <b>제목</b>  <h5 th:text="${boardArticleDto.getTitle()}"></h5>
         </div>
 
-        <a class="btn btn-light btn-sm" href="/write" role="button">수정</a>
-        <a class="btn btn-light btn-sm" href="/board" role="button">취소</a>
+        <div class="mb-3">
+            <p th:text="${boardArticleDto.getUserId()} + '님' + ' (' +${boardArticleDto.getLocalIp()} + ')'" ></p>
+            <p th:text="${boardArticleDto.getCreateTime()}"></p>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <b>내용</b>  <p style="width: 80%; height: 200px;" th:text="${boardArticleDto.getContents()}"></p>
+        </div>
+
+        <hr>
+        <th:block th:if="${boardArticleDto.getUserId() == sessionUserId}">
+
+            <a class="btn btn-light btn-sm" th:href="@{'/modify/'+${boardArticleDto.getId()}}" role="button">수정</a>
+            <a class="btn btn-light btn-sm" th:href="@{'/delete/'+${boardArticleDto.getId()}}" role="button">삭제</a>
+        </th:block>
+        <a class="btn btn-light btn-sm" href="/board" role="button">목록</a>
     </div>
 </form>
 </body>

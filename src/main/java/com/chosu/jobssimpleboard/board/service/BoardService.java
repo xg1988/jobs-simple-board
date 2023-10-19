@@ -2,6 +2,7 @@ package com.chosu.jobssimpleboard.board.service;
 
 
 import com.chosu.jobssimpleboard.board.dto.BoardArticleDto;
+import com.chosu.jobssimpleboard.board.dto.BoardModifyDto;
 import com.chosu.jobssimpleboard.board.repository.BoardArticleDtoRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,5 +42,33 @@ public class BoardService {
                         .createTime(LocalDateTime.now())
                         .updateTime(LocalDateTime.now())
                 .build());
+    }
+
+    public BoardArticleDto select(Long id) {
+        return boardArticleDtoRepository.findById(id).orElseThrow(NullPointerException::new);
+    }
+
+    public void modifyBoard(BoardModifyDto boardModifyDto) {
+
+        BoardArticleDto boardArticleDto = select(boardModifyDto.getId());
+
+        log.info("boardArticleDto >> {}" , boardArticleDto);
+        log.info("boardModifyDto >> {}" , boardModifyDto);
+
+        boardArticleDtoRepository.saveAndFlush(BoardArticleDto.builder()
+                .contents(boardModifyDto.getContents())
+                .title(boardModifyDto.getTitle())
+                .id(boardModifyDto.getId())
+                .updateTime(LocalDateTime.now())
+
+                .createTime(boardArticleDto.getCreateTime())
+                .hitCnt(boardArticleDto.getHitCnt())
+                .userId(boardArticleDto.getUserId())
+                .localIp(boardArticleDto.getLocalIp())
+                .build());
+    }
+
+    public void delete(Long id) {
+        boardArticleDtoRepository.deleteById(id);
     }
 }

@@ -30,7 +30,7 @@ public class BoardTest {
                     .contents("테스트 게시글")
                     .build();
             boardService.saveBoard(boardWriteDto.getTitle(), boardWriteDto.getContents(), "user", "127.0.0.1");
-        }
+        }/*
 
 
         Pageable pageable = PageRequest.of(1, 10).toOptional().orElseThrow();
@@ -41,6 +41,6 @@ public class BoardTest {
 
         for(BoardArticleDto o: list){
             System.out.println("시스템로그 [o.toString()]: " + o.toString());
-        }
+        }*/
     }
 }

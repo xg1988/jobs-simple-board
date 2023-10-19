@@ -23,10 +23,8 @@ public class UserSecurityDto implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<>();
         //GrantedAuthority를 Collection안에 담기
-        collect.add((GrantedAuthority) () -> {
-            log.info("userDto.getRole() >> {}", userDto.getRole());
-            return userDto.getRole(); //여기서 역할 뽑기
-        });
+        //여기서 역할 뽑기
+        collect.add((GrantedAuthority) userDto::getRole);
         return collect;
 
 

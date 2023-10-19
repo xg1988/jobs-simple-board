@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name="simple_board_info")
 public class BoardArticleDto {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 입력을 생략하면 DBMS가 알아서 해줌
     private Long id;
     @Column(nullable = false)
     private String title;
@@ -32,4 +32,9 @@ public class BoardArticleDto {
     private LocalDateTime createTime;
     @Column(nullable = false)
     private LocalDateTime updateTime;
+
+/*
+    @OneToOne
+    private BoardTypeDto boardTypeDto;
+*/
 }
