@@ -39,4 +39,9 @@ public class LoginController {
         redirectAttributes.addFlashAttribute("userDto", userSecurityDto.getUserDto());
         return "redirect:/";
     }
+/*
+    @GetMapping(value = "/login")
+    public String login(){
+        return "login";
+    }*/
 }

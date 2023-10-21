@@ -55,11 +55,13 @@ public class WebSecurityConfig {
 
         http
                 .formLogin(Customizer.withDefaults())
-                /*.formLogin(httpSecurityFormLoginConfigurer -> {
+                /*
+                .formLogin(httpSecurityFormLoginConfigurer -> {
                     httpSecurityFormLoginConfigurer
-                            .loginPage("")
-                            .passwordParameter("")
-                            .usernameParameter("")
+                            .loginPage("/login")
+                            .passwordParameter("userId")
+                            .usernameParameter("password");
+                            /*
                             .defaultSuccessUrl("", false)
                             .successForwardUrl("")
                             .failureForwardUrl("")

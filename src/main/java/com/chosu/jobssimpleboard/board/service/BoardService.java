@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class BoardService {
 
         BoardArticleDto boardArticleDto = boardArticleDtoRepository.saveAndFlush(BoardArticleDto.builder()
                         .contents(content)
-                        .hitCnt(0)
+                        .viewCount(0)
                         .title(title)
                         .localIp(localIp)
                         .userId(username)
@@ -55,9 +56,12 @@ public class BoardService {
                 .build());*/
     }
 
+    @Transactional
     public BoardArticleDto select(Long id) {
         /*Optional<BoardListRedisDto> boardListRedisDto = boardListRedisDtoRepository.findById(id);
         log.info("boardListRedisDto >> {}", boardListRedisDto);*/
+
+        boardArticleDtoRepository.updateViewCount(id);
 
         return boardArticleDtoRepository.findById(id).orElseThrow(NullPointerException::new);
     }
@@ -76,7 +80,7 @@ public class BoardService {
                 .updateTime(LocalDateTime.now())
 
                 .createTime(boardArticleDto.getCreateTime())
-                .hitCnt(boardArticleDto.getHitCnt())
+                .viewCount(boardArticleDto.getViewCount())
                 .userId(boardArticleDto.getUserId())
                 .localIp(boardArticleDto.getLocalIp())
                 .build());

@@ -27,7 +27,7 @@ public class BoardArticleDto {
     @Column(nullable = false)
     private String localIp;
     @Column(nullable = false)
-    private int hitCnt;
+    private int viewCount;
     @Column(nullable = false)
     private LocalDateTime createTime;
     @Column(nullable = false)
