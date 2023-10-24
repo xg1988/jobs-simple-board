@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @Entity
-@Table(name = "sample_board_like")
+@Table(name = "simple_board_like")
 public class BoardArticleLikeDto {
 
     @Id
@@ -25,11 +25,11 @@ public class BoardArticleLikeDto {
     @JoinColumn(name = "userId")
     private UserDto userDto;
 
-    @OneToOne
-    @JoinColumn(name="id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "id")
     private BoardArticleDto boardArticleDto;
 
+    private String likeYn;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-
 }
