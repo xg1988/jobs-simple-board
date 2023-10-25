@@ -6,6 +6,8 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +34,10 @@ public class BoardArticleDto {
     private LocalDateTime createTime;
     @Column(nullable = false)
     private LocalDateTime updateTime;
+
+    /** 좋아요 정보 가져오기**/
+    @OneToMany(mappedBy = "boardArticleDto", cascade = CascadeType.REMOVE)
+    List<BoardArticleLikeDto> boardArticleLikeDtos = new ArrayList<>();
 
 /*
     @OneToOne

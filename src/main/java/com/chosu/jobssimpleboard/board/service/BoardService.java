@@ -1,13 +1,8 @@
 package com.chosu.jobssimpleboard.board.service;
 
 
-import com.chosu.jobssimpleboard.board.dto.BoardArticleDto;
-import com.chosu.jobssimpleboard.board.dto.BoardArticleRedisDto;
-import com.chosu.jobssimpleboard.board.dto.BoardListRedisDto;
-import com.chosu.jobssimpleboard.board.dto.BoardModifyDto;
-import com.chosu.jobssimpleboard.board.repository.BoardArticleDtoRepository;
-import com.chosu.jobssimpleboard.board.repository.BoardListRedisDtoRepository;
-import com.chosu.jobssimpleboard.board.repository.RedisBaseRepository;
+import com.chosu.jobssimpleboard.board.dto.*;
+import com.chosu.jobssimpleboard.board.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,6 +23,8 @@ public class BoardService {
     private BoardArticleDtoRepository boardArticleDtoRepository;
     private BoardListRedisDtoRepository boardListRedisDtoRepository;
     private RedisBaseRepository redisBaseRepository;
+    private UserDtoRepository userDtoRepository;
+    private BoardArticleLikeDtoRepository boardArticleLikeDtoRepository;
     public Page<BoardArticleDto> selectList(Pageable pageable){
 
         log.info("selectList size >> {}", pageable.getPageSize());
@@ -77,6 +74,10 @@ public class BoardService {
 
         BoardArticleDto boardArticleDto = boardArticleDtoRepository.findById(id).orElseThrow(NullPointerException::new);
 
+        boardArticleDto.getBoardArticleLikeDtos().forEach((boardArticleLikeDto -> {
+            log.info("boardArticleLikeDto.toString() >> {}", boardArticleLikeDto.toString());
+        }));
+
         String redisViewCount = redisBaseRepository.getValues("viewCount_"+ boardArticleDto.getId());
         String insertViewCount = "";
         if(redisViewCount != null){
@@ -117,5 +118,24 @@ public class BoardService {
     public void delete(Long id) {
         redisBaseRepository.deleteValues("viewCount_" + id);
         boardArticleDtoRepository.deleteById(id);
+    }
+
+    public void updateLike(Long boardId, String userId){
+        UserDto userDto = userDtoRepository.findById(userId).orElseThrow();
+        BoardArticleDto boardArticleDto = boardArticleDtoRepository.findById(boardId).orElseThrow();
+        List<BoardArticleLikeDto> boardArticleLikeDto = boardArticleLikeDtoRepository.findByUserDtoAndBoardArticleDto(
+                userDto, boardArticleDto
+        );
+        String requestlikeYn = "Y";
+        if(boardArticleLikeDto.size() > 0)  requestlikeYn = "N";
+        log.info("requestLikeYn >> {}", requestlikeYn);
+
+        boardArticleLikeDtoRepository.save(BoardArticleLikeDto.builder()
+                .userDto(userDto)
+                .boardArticleDto(boardArticleDto)
+                .updateTime(LocalDateTime.now())
+                .createTime(LocalDateTime.now())
+                .likeYn(requestlikeYn) // default Y
+                .build());
     }
 }

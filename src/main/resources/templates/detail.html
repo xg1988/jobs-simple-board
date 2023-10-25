@@ -26,9 +26,11 @@
             <b>내용</b>  <p style="width: 80%; height: 200px;" th:text="${boardArticleDto.getContents()}"></p>
         </div>
 
+        <hr/>
+
+        <span th:text="${boardArticleDto.getBoardArticleLikeDtos().size()}"></span>
         <hr>
         <th:block th:if="${boardArticleDto.getUserId() == sessionUserId}">
-
             <a class="btn btn-light btn-sm" th:href="@{'/modify/'+${boardArticleDto.getId()}}" role="button">수정</a>
             <a class="btn btn-light btn-sm" th:href="@{'/delete/'+${boardArticleDto.getId()}}" role="button">삭제</a>
         </th:block>

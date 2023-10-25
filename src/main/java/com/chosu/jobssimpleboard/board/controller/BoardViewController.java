@@ -115,4 +115,13 @@ public class BoardViewController {
     public String type(){
         return "type";
     }
+
+    @GetMapping(value = "/updateLike/{boardId}")
+    public String updateLike(@PathVariable String boardId, Principal principal){
+        log.info("principal.getName() >>{}", principal.getName());
+
+        boardService.updateLike(Long.parseLong(boardId), principal.getName());
+
+        return "redirect:/detail/" + boardId;
+    }
 }
