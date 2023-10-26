@@ -6,7 +6,8 @@ import com.chosu.jobssimpleboard.board.dto.UserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BoardArticleLikeDtoRepository extends JpaRepository<BoardArticleLikeDto, Long> {
-    public List<BoardArticleLikeDto> findByUserDtoAndBoardArticleDto(UserDto userDto, BoardArticleDto boardArticleDto);
+    public Optional<BoardArticleLikeDto> findByUserDtoAndBoardArticleDto(UserDto userDto, BoardArticleDto boardArticleDto);
 }

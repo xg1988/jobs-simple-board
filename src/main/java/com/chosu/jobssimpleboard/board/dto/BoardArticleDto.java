@@ -36,8 +36,8 @@ public class BoardArticleDto {
     private LocalDateTime updateTime;
 
     /** 좋아요 정보 가져오기**/
-    @OneToMany(mappedBy = "boardArticleDto", cascade = CascadeType.REMOVE)
-    List<BoardArticleLikeDto> boardArticleLikeDtos = new ArrayList<>();
+/*    @OneToMany(mappedBy = "boardArticleDto", cascade = CascadeType.REMOVE)
+    List<BoardArticleLikeDto> boardArticleLikeDtos = new ArrayList<>();*/
 
 /*
     @OneToOne

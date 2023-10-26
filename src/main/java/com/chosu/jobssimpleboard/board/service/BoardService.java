@@ -74,9 +74,6 @@ public class BoardService {
 
         BoardArticleDto boardArticleDto = boardArticleDtoRepository.findById(id).orElseThrow(NullPointerException::new);
 
-        boardArticleDto.getBoardArticleLikeDtos().forEach((boardArticleLikeDto -> {
-            log.info("boardArticleLikeDto.toString() >> {}", boardArticleLikeDto.toString());
-        }));
 
         String redisViewCount = redisBaseRepository.getValues("viewCount_"+ boardArticleDto.getId());
         String insertViewCount = "";
@@ -120,22 +117,39 @@ public class BoardService {
         boardArticleDtoRepository.deleteById(id);
     }
 
-    public void updateLike(Long boardId, String userId){
-        UserDto userDto = userDtoRepository.findById(userId).orElseThrow();
-        BoardArticleDto boardArticleDto = boardArticleDtoRepository.findById(boardId).orElseThrow();
-        List<BoardArticleLikeDto> boardArticleLikeDto = boardArticleLikeDtoRepository.findByUserDtoAndBoardArticleDto(
-                userDto, boardArticleDto
-        );
-        String requestlikeYn = "Y";
-        if(boardArticleLikeDto.size() > 0)  requestlikeYn = "N";
-        log.info("requestLikeYn >> {}", requestlikeYn);
+    public void updateLike(Long boardId, String userId) throws Exception {
 
-        boardArticleLikeDtoRepository.save(BoardArticleLikeDto.builder()
-                .userDto(userDto)
-                .boardArticleDto(boardArticleDto)
-                .updateTime(LocalDateTime.now())
-                .createTime(LocalDateTime.now())
-                .likeYn(requestlikeYn) // default Y
-                .build());
+        Optional<BoardArticleDto> boardArticleDto = boardArticleDtoRepository.findById(boardId);
+        if(boardArticleDto.isEmpty()){
+            throw new Exception("게시글 정보가 없습니다.");
+        }
+        Optional<UserDto> userDto = userDtoRepository.findById(userId);
+        if(userDto.isEmpty()){
+            throw new Exception("유저 정보가 없습니다.");
+        }
+
+        Optional<BoardArticleLikeDto> boardArticleLikeDto
+                =  boardArticleLikeDtoRepository.findByUserDtoAndBoardArticleDto(userDto.get(), boardArticleDto.get());
+        if(boardArticleLikeDto.isEmpty()){
+            boardArticleLikeDtoRepository.save(
+                    BoardArticleLikeDto.builder()
+                            .likeYn("Y")
+                            .userDto(userDto.get())
+                            .updateTime(LocalDateTime.now())
+                            .createTime(LocalDateTime.now())
+                            .build()
+            );
+        }else{
+            boardArticleLikeDtoRepository.save(
+                    BoardArticleLikeDto.builder()
+                            .id(boardArticleLikeDto.get().getId())
+                            .likeYn("N")
+                            .boardArticleDto(boardArticleDto.get())
+                            .userDto(userDto.get())
+                            .updateTime(LocalDateTime.now())
+                            .createTime(boardArticleLikeDto.get().getCreateTime())
+                            .build()
+            );
+        }
     }
 }
