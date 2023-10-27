@@ -28,7 +28,7 @@
 
         <hr/>
 
-        <span th:text="${boardArticleDto.getBoardArticleLikeDtos().size()}"></span>
+            좋아요 수 : <span th:text="${boardArticleDto.getList().size()}"></span>
         <hr>
         <th:block th:if="${boardArticleDto.getUserId() == sessionUserId}">
             <a class="btn btn-light btn-sm" th:href="@{'/modify/'+${boardArticleDto.getId()}}" role="button">수정</a>

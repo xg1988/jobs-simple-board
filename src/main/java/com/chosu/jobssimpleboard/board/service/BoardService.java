@@ -117,6 +117,7 @@ public class BoardService {
         boardArticleDtoRepository.deleteById(id);
     }
 
+    @Transactional
     public void updateLike(Long boardId, String userId) throws Exception {
 
         Optional<BoardArticleDto> boardArticleDto = boardArticleDtoRepository.findById(boardId);
@@ -135,6 +136,7 @@ public class BoardService {
                     BoardArticleLikeDto.builder()
                             .likeYn("Y")
                             .userDto(userDto.get())
+                            .boardArticleDto(boardArticleDto.get())
                             .updateTime(LocalDateTime.now())
                             .createTime(LocalDateTime.now())
                             .build()

@@ -26,7 +26,7 @@ public class BoardArticleLikeDto {
     private UserDto userDto;
 
     @ManyToOne
-    @JoinColumn(name="id", insertable = false, updatable = false)
+    @JoinColumn(referencedColumnName="id")
     private BoardArticleDto boardArticleDto;
 
     private String likeYn;

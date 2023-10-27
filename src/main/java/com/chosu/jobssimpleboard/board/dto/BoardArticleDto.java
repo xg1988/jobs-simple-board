@@ -18,7 +18,8 @@ import java.util.List;
 @Table(name="simple_board_info")
 public class BoardArticleDto {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 입력을 생략하면 DBMS가 알아서 해줌
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 입력을 생략하면 DBMS가 알아서 해줌
     private Long id;
     @Column(nullable = false)
     private String title;
@@ -35,12 +36,6 @@ public class BoardArticleDto {
     @Column(nullable = false)
     private LocalDateTime updateTime;
 
-    /** 좋아요 정보 가져오기**/
-/*    @OneToMany(mappedBy = "boardArticleDto", cascade = CascadeType.REMOVE)
-    List<BoardArticleLikeDto> boardArticleLikeDtos = new ArrayList<>();*/
-
-/*
-    @OneToOne
-    private BoardTypeDto boardTypeDto;
-*/
+    @OneToMany(mappedBy = "boardArticleDto", cascade = CascadeType.MERGE)
+    private List<BoardArticleLikeDto> list = new ArrayList<>();
 }
