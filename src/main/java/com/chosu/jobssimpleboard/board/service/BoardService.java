@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +38,10 @@ public class BoardService {
             if(redisViewCount == null) redisViewCount = "0";
             int viewCount = Integer.parseInt(redisViewCount);
             log.info("redisBaseRepository >> viewCount >>{}" , viewCount);
-
+/*
             if(viewCount > 0){
                 boardArticleDto.setViewCount(viewCount);
-            }
+            }*/
         });
         return list;
     }
@@ -67,13 +69,7 @@ public class BoardService {
 
     @Transactional
     public BoardArticleDto select(Long id) {
-        /*Optional<BoardListRedisDto> boardListRedisDto = boardListRedisDtoRepository.findById(id);
-        log.info("boardListRedisDto >> {}", boardListRedisDto);*/
-
-        //boardArticleDtoRepository.updateViewCount(id);
-
         BoardArticleDto boardArticleDto = boardArticleDtoRepository.findById(id).orElseThrow(NullPointerException::new);
-
 
         String redisViewCount = redisBaseRepository.getValues("viewCount_"+ boardArticleDto.getId());
         String insertViewCount = "";
@@ -83,12 +79,28 @@ public class BoardService {
             insertViewCount = String.valueOf(boardArticleDto.getViewCount() +1);
         }
 
-        redisBaseRepository.setValues("viewCount_" + boardArticleDto.getId(), insertViewCount);
+        // 기한을 1분으로 설정해봄
+        redisBaseRepository.setValues("viewCount_" + boardArticleDto.getId(), insertViewCount, Duration.ofMinutes(1L));
 
         String test = redisBaseRepository.getValues("viewCount_" + boardArticleDto.getId());
         log.info("test >>{}", test);
 
+/*
+        boardArticleDto.setList(
+                boardArticleDto.getList().stream().filter(o->o.getLikeYn().equals(BoardLikeEnum.LIKE.getLikeYn())).toList()
+        );*/
+
         return boardArticleDto;
+    }
+
+    public BoardArticleLikeDto selectBoardArticleLikeDto(Principal principal, BoardArticleDto boardArticleDto){
+        UserDto userDto = userDtoRepository.findById(principal.getName()).orElseThrow(NullPointerException::new);
+
+        BoardArticleLikeDto boardArticleLikeDto = boardArticleLikeDtoRepository.findByUserDtoAndBoardArticleDtoAndLikeYn(userDto, boardArticleDto, "Y").orElse(null);
+
+        log.info("boardArticleLikeDto >> {}" , boardArticleLikeDto);
+
+        return boardArticleLikeDto;
     }
 
     public void modifyBoard(BoardModifyDto boardModifyDto) {
@@ -131,10 +143,12 @@ public class BoardService {
 
         Optional<BoardArticleLikeDto> boardArticleLikeDto
                 =  boardArticleLikeDtoRepository.findByUserDtoAndBoardArticleDto(userDto.get(), boardArticleDto.get());
-        if(boardArticleLikeDto.isEmpty()){
+
+
+        if(boardArticleLikeDto.isEmpty() || BoardLikeEnum.NOTLIKE.getLikeYn().equals(boardArticleLikeDto.get().getLikeYn())){
             boardArticleLikeDtoRepository.save(
                     BoardArticleLikeDto.builder()
-                            .likeYn("Y")
+                            .likeYn(BoardLikeEnum.LIKE.getLikeYn())
                             .userDto(userDto.get())
                             .boardArticleDto(boardArticleDto.get())
                             .updateTime(LocalDateTime.now())
@@ -145,7 +159,7 @@ public class BoardService {
             boardArticleLikeDtoRepository.save(
                     BoardArticleLikeDto.builder()
                             .id(boardArticleLikeDto.get().getId())
-                            .likeYn("N")
+                            .likeYn(BoardLikeEnum.NOTLIKE.getLikeYn())
                             .boardArticleDto(boardArticleDto.get())
                             .userDto(userDto.get())
                             .updateTime(LocalDateTime.now())

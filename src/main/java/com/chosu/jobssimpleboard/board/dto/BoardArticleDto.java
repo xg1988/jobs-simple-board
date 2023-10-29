@@ -11,10 +11,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
 @Builder
 @Entity
-@ToString
 @Table(name="simple_board_info")
 public class BoardArticleDto {
 

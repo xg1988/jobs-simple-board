@@ -10,4 +10,6 @@ import java.util.Optional;
 
 public interface BoardArticleLikeDtoRepository extends JpaRepository<BoardArticleLikeDto, Long> {
     public Optional<BoardArticleLikeDto> findByUserDtoAndBoardArticleDto(UserDto userDto, BoardArticleDto boardArticleDto);
+    public Optional<BoardArticleLikeDto> findByUserDtoAndBoardArticleDtoAndLikeYn(UserDto userDto, BoardArticleDto boardArticleDto, String likeYn);
+
 }

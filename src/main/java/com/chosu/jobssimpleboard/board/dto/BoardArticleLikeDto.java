@@ -1,9 +1,6 @@
 package com.chosu.jobssimpleboard.board.dto;
 
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,7 +8,7 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
 @Builder
 @Entity
 @Table(name = "simple_board_like")

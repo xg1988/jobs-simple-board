@@ -29,6 +29,12 @@
         <hr/>
 
             좋아요 수 : <span th:text="${boardArticleDto.getList().size()}"></span>
+            <th:block th:if="${boardArticleLikeDto != null && boardArticleLikeDto.getLikeYn() == 'Y'}">
+                <a class="btn btn-light btn-sm" th:href="@{'/updateLike/'+${boardArticleDto.getId()}}" role="button">좋아요 취소</a>
+            </th:block>
+            <th:block th:unless="${boardArticleLikeDto != null && boardArticleLikeDto.getLikeYn() == 'Y'}">
+                <a class="btn btn-light btn-sm" th:href="@{'/updateLike/'+${boardArticleDto.getId()}}" role="button">좋아요</a>
+            </th:block>
         <hr>
         <th:block th:if="${boardArticleDto.getUserId() == sessionUserId}">
             <a class="btn btn-light btn-sm" th:href="@{'/modify/'+${boardArticleDto.getId()}}" role="button">수정</a>

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionAopConfig {
     @ExceptionHandler(Exception.class)
     public String exception(Exception e, Model model){
+        e.printStackTrace();
+
         model.addAttribute("errorMessage", e.getMessage());
         model.addAttribute("errorCode", "0000");
         return "exception";
@@ -18,6 +20,7 @@ public class ExceptionAopConfig {
 
     @ExceptionHandler(NullPointerException.class)
     public String nullPointerException(Exception e, Model model){
+        e.printStackTrace();
         model.addAttribute("errorMessage", e.getMessage());
         model.addAttribute("errorCode", "0001");
         return "exception";

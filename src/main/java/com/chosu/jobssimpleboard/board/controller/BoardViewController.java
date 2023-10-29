@@ -2,6 +2,7 @@ package com.chosu.jobssimpleboard.board.controller;
 
 
 import com.chosu.jobssimpleboard.board.dto.BoardArticleDto;
+import com.chosu.jobssimpleboard.board.dto.BoardArticleLikeDto;
 import com.chosu.jobssimpleboard.board.dto.BoardModifyDto;
 import com.chosu.jobssimpleboard.board.dto.BoardWriteDto;
 import com.chosu.jobssimpleboard.board.service.BoardService;
@@ -60,8 +61,13 @@ public class BoardViewController {
         log.info("principal.getName() >> {}" , principal.getName());
 
         BoardArticleDto boardArticleDto = boardService.select(id);
+
+        BoardArticleLikeDto boardArticleLikeDto = boardService.selectBoardArticleLikeDto(principal, boardArticleDto);
+
         model.addAttribute("boardArticleDto" , boardArticleDto);
+        model.addAttribute("boardArticleLikeDto" , boardArticleLikeDto);
         model.addAttribute("sessionUserId", principal.getName());
+
         return "detail";
     }
 
