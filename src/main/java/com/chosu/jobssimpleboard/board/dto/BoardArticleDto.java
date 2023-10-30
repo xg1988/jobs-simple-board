@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
 @Entity
 @Table(name="simple_board_info")
@@ -35,6 +36,12 @@ public class BoardArticleDto {
     @Column(nullable = false)
     private LocalDateTime updateTime;
 
+    // DB 미포함
+    @Transient
+    private int likeYnCnt;
+/*
     @OneToMany(mappedBy = "boardArticleDto", cascade = CascadeType.MERGE)
     private List<BoardArticleLikeDto> list = new ArrayList<>();
+
+ */
 }

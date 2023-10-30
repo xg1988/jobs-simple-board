@@ -12,4 +12,6 @@ public interface BoardArticleLikeDtoRepository extends JpaRepository<BoardArticl
     public Optional<BoardArticleLikeDto> findByUserDtoAndBoardArticleDto(UserDto userDto, BoardArticleDto boardArticleDto);
     public Optional<BoardArticleLikeDto> findByUserDtoAndBoardArticleDtoAndLikeYn(UserDto userDto, BoardArticleDto boardArticleDto, String likeYn);
 
+    public int countBoardArticleLikeDtoByBoardArticleDtoIdAndLikeYn(Long id, String likeYn);
+
 }

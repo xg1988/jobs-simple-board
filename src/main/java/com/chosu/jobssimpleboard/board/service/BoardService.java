@@ -27,6 +27,9 @@ public class BoardService {
     private RedisBaseRepository redisBaseRepository;
     private UserDtoRepository userDtoRepository;
     private BoardArticleLikeDtoRepository boardArticleLikeDtoRepository;
+
+    public static String REDIS_CONFIG_VIEWCOUNT_KEY  = "viewCount_";
+
     public Page<BoardArticleDto> selectList(Pageable pageable){
 
         log.info("selectList size >> {}", pageable.getPageSize());
@@ -34,14 +37,10 @@ public class BoardService {
 
         Page<BoardArticleDto> list =boardArticleDtoRepository.findAllByOrderByIdDesc(pageable);
         list.forEach(boardArticleDto -> {
-            String redisViewCount = redisBaseRepository.getValues("viewCount_" +boardArticleDto.getId());
+            String redisViewCount = redisBaseRepository.getValues(REDIS_CONFIG_VIEWCOUNT_KEY +boardArticleDto.getId());
             if(redisViewCount == null) redisViewCount = "0";
             int viewCount = Integer.parseInt(redisViewCount);
             log.info("redisBaseRepository >> viewCount >>{}" , viewCount);
-/*
-            if(viewCount > 0){
-                boardArticleDto.setViewCount(viewCount);
-            }*/
         });
         return list;
     }
@@ -57,40 +56,36 @@ public class BoardService {
                         .createTime(LocalDateTime.now())
                         .updateTime(LocalDateTime.now())
                 .build());
-/*
-        boardListRedisDtoRepository.save(BoardListRedisDto.builder()
-                        .createTime(LocalDateTime.now())
-                        .userId(username)
-                        .hitCnt(0)
-                        .title(title)
-                        .id(boardArticleDto.getId())
-                .build());*/
     }
 
     @Transactional
     public BoardArticleDto select(Long id) {
         BoardArticleDto boardArticleDto = boardArticleDtoRepository.findById(id).orElseThrow(NullPointerException::new);
 
-        String redisViewCount = redisBaseRepository.getValues("viewCount_"+ boardArticleDto.getId());
-        String insertViewCount = "";
-        if(redisViewCount != null){
-            insertViewCount = String.valueOf(Integer.parseInt(redisViewCount) +1);
-        }else{
-            insertViewCount = String.valueOf(boardArticleDto.getViewCount() +1);
-        }
+        int viewCnt = getViewCnt(boardArticleDto);
+        boardArticleDto.setViewCount(viewCnt);
+        log.info("viewCnt >>{}", viewCnt);
 
-        // 기한을 1분으로 설정해봄
-        redisBaseRepository.setValues("viewCount_" + boardArticleDto.getId(), insertViewCount, Duration.ofMinutes(1L));
-
-        String test = redisBaseRepository.getValues("viewCount_" + boardArticleDto.getId());
-        log.info("test >>{}", test);
-
-/*
-        boardArticleDto.setList(
-                boardArticleDto.getList().stream().filter(o->o.getLikeYn().equals(BoardLikeEnum.LIKE.getLikeYn())).toList()
-        );*/
+        int likeYnCnt = boardArticleLikeDtoRepository.countBoardArticleLikeDtoByBoardArticleDtoIdAndLikeYn(id, BoardLikeEnum.LIKE.getLikeYn());
+        boardArticleDto.setLikeYnCnt(likeYnCnt);
+        log.info("likeYnCnt >>{}", likeYnCnt);
 
         return boardArticleDto;
+    }
+
+
+
+    private int getViewCnt(BoardArticleDto boardArticleDto) {
+        String redisBoardKey = REDIS_CONFIG_VIEWCOUNT_KEY+ boardArticleDto.getId();
+
+        String redisViewCount = redisBaseRepository.getValues(redisBoardKey);
+        String insertViewCount = (redisViewCount != null) ?
+                                            String.valueOf(Integer.parseInt(redisViewCount) +1) :
+                                            String.valueOf(boardArticleDto.getViewCount() +1);
+        // 기한을 1분으로 설정해봄
+        redisBaseRepository.setValues(redisBoardKey, insertViewCount, Duration.ofMinutes(1L));
+
+        return Integer.parseInt(redisBaseRepository.getValues(redisBoardKey));
     }
 
     public BoardArticleLikeDto selectBoardArticleLikeDto(Principal principal, BoardArticleDto boardArticleDto){
