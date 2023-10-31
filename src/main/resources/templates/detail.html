@@ -9,7 +9,6 @@
 
 </head>
 <body>
-<form method="post" action="/write">
     <div class="container" style="font-size: 12px;">
         <!-- Content here -->
         <h3>게시판 상세조회</h3>
@@ -29,7 +28,7 @@
 
         <hr/>
             조회수 : <span th:text="${boardArticleDto.getViewCount()}"></span> &nbsp;
-            좋아요 수 : <span th:text="${boardArticleDto.getLikeYnCnt()}"></span>
+            좋아요 수 : <span th:text="${boardArticleDto.getLikeYnCount()}"></span>
             <th:block th:if="${boardArticleLikeDto != null && boardArticleLikeDto.getLikeYn() == 'Y'}">
                 <a class="btn btn-light btn-sm" th:href="@{'/updateLike/'+${boardArticleDto.getId()}}" role="button">좋아요 취소</a>
             </th:block>
@@ -37,12 +36,36 @@
                 <a class="btn btn-light btn-sm" th:href="@{'/updateLike/'+${boardArticleDto.getId()}}" role="button">좋아요</a>
             </th:block>
         <hr>
+
+        <form method="post" action="/comment" name="commentForm">
+            <div class="input-group">
+                <textarea class="form-control" aria-label="With textarea" placeholder="댓글을 입력하세요" name="comment"></textarea>
+                <button class="input-group-text">댓글 등록</button>
+            </div>
+            <input type="hidden" name="boardId" th:value="${boardArticleDto.getId()}">
+        </form>
+
+        <div class="list-group">
+
+            <th:block th:each="data:${boardCommentDtos}">
+                <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1" th:text="${data.getUserId()}"></h6>
+                        <small th:text="${data.getCreateTime() + '/'+data.getLocalIp()}"></small>
+                    </div>
+                    <p class="mb-1" th:text="${data.getComment()}"></p>
+<!--                    <small>And some small print.</small>-->
+                </a>
+            </th:block>
+        </div>
+
+
+        <hr>
         <th:block th:if="${boardArticleDto.getUserId() == sessionUserId}">
             <a class="btn btn-light btn-sm" th:href="@{'/modify/'+${boardArticleDto.getId()}}" role="button">수정</a>
             <a class="btn btn-light btn-sm" th:href="@{'/delete/'+${boardArticleDto.getId()}}" role="button">삭제</a>
         </th:block>
         <a class="btn btn-light btn-sm" href="/board" role="button">목록</a>
     </div>
-</form>
 </body>
 </html>

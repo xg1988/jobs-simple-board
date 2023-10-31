@@ -22,13 +22,13 @@ import java.util.Optional;
 @Slf4j
 public class BoardService {
 
-    private BoardArticleDtoRepository boardArticleDtoRepository;
-    private BoardListRedisDtoRepository boardListRedisDtoRepository;
-    private RedisBaseRepository redisBaseRepository;
-    private UserDtoRepository userDtoRepository;
-    private BoardArticleLikeDtoRepository boardArticleLikeDtoRepository;
+    private final BoardArticleDtoRepository boardArticleDtoRepository;
+    private final BoardListRedisDtoRepository boardListRedisDtoRepository;
+    private final RedisBaseRepository redisBaseRepository;
+    private final UserDtoRepository userDtoRepository;
+    private final BoardArticleLikeDtoRepository boardArticleLikeDtoRepository;
 
-    public static String REDIS_CONFIG_VIEWCOUNT_KEY  = "viewCount_";
+    public final static String REDIS_CONFIG_VIEWCOUNT_KEY  = "viewCount_";
 
     public Page<BoardArticleDto> selectList(Pageable pageable){
 
@@ -63,12 +63,12 @@ public class BoardService {
         BoardArticleDto boardArticleDto = boardArticleDtoRepository.findById(id).orElseThrow(NullPointerException::new);
 
         int viewCnt = getViewCnt(boardArticleDto);
-        boardArticleDto.setViewCount(viewCnt);
+        boardArticleDto.updateViewCount(viewCnt);
         log.info("viewCnt >>{}", viewCnt);
 
-        int likeYnCnt = boardArticleLikeDtoRepository.countBoardArticleLikeDtoByBoardArticleDtoIdAndLikeYn(id, BoardLikeEnum.LIKE.getLikeYn());
-        boardArticleDto.setLikeYnCnt(likeYnCnt);
-        log.info("likeYnCnt >>{}", likeYnCnt);
+        int likeYnCount = boardArticleLikeDtoRepository.countBoardArticleLikeDtoByBoardArticleDtoIdAndLikeYn(id, BoardLikeEnum.LIKE.getLikeYn());
+        boardArticleDto.updateLikeYnCount(likeYnCount);
+        log.info("likeYnCnt >>{}", likeYnCount);
 
         return boardArticleDto;
     }

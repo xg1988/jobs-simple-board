@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 @Entity
 @Table(name="simple_board_info")
 public class BoardArticleDto {
@@ -38,7 +38,16 @@ public class BoardArticleDto {
 
     // DB 미포함
     @Transient
-    private int likeYnCnt;
+    private int likeYnCount;
+
+    public void updateViewCount(int viewCount){
+        this.viewCount = viewCount;
+    }
+
+    public void updateLikeYnCount(int likeYnCount){
+        this.likeYnCount = likeYnCount;
+    }
+
 /*
     @OneToMany(mappedBy = "boardArticleDto", cascade = CascadeType.MERGE)
     private List<BoardArticleLikeDto> list = new ArrayList<>();

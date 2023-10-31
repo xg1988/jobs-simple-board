@@ -1,10 +1,8 @@
 package com.chosu.jobssimpleboard.board.controller;
 
 
-import com.chosu.jobssimpleboard.board.dto.BoardArticleDto;
-import com.chosu.jobssimpleboard.board.dto.BoardArticleLikeDto;
-import com.chosu.jobssimpleboard.board.dto.BoardModifyDto;
-import com.chosu.jobssimpleboard.board.dto.BoardWriteDto;
+import com.chosu.jobssimpleboard.board.dto.*;
+import com.chosu.jobssimpleboard.board.service.BoardCommentService;
 import com.chosu.jobssimpleboard.board.service.BoardService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +21,12 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class BoardViewController {
 
-    private BoardService boardService;
+    private final BoardService boardService;
+    private final BoardCommentService boardCommentService;
 
     @GetMapping(value = "/")
     public String index(){
@@ -64,9 +63,12 @@ public class BoardViewController {
 
         BoardArticleLikeDto boardArticleLikeDto = boardService.selectBoardArticleLikeDto(principal, boardArticleDto);
 
+        List<BoardCommentDto> boardCommentDtos = boardCommentService.getComments(id);
+
         model.addAttribute("boardArticleDto" , boardArticleDto);
         model.addAttribute("boardArticleLikeDto" , boardArticleLikeDto);
         model.addAttribute("sessionUserId", principal.getName());
+        model.addAttribute("boardCommentDtos", boardCommentDtos);
 
         return "detail";
     }
@@ -128,6 +130,6 @@ public class BoardViewController {
 
         boardService.updateLike(Long.parseLong(boardId), principal.getName());
 
-        return "redirect:/board";
+        return "redirect:/detail/" + Long.parseLong(boardId);
     }
 }
