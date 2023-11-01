@@ -4,16 +4,12 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Data
+@ToString
 @Builder
 public class BoardCommentWriteDto {
 
-    private String id;
     private String comment;
-    private String boardId;
+    private Long boardId;
     private String localIp;
-
-    public void updateLocalIp(String localIp){
-        this.localIp = localIp;
-    }
 }

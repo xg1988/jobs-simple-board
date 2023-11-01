@@ -6,6 +6,7 @@ import com.chosu.jobssimpleboard.board.dto.BoardCommentWriteDto;
 import com.chosu.jobssimpleboard.board.repository.BoardCommentDtoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class BoardCommentService {
     public BoardCommentDto insertComment(BoardCommentWriteDto boardCommentWriteDto, Principal principal){
         log.info("boardCommentWriteDto >> {}" , boardCommentWriteDto);
 
-        Long boardId = Long.parseLong(boardCommentWriteDto.getBoardId());
+        Long boardId = boardCommentWriteDto.getBoardId();
         log.info("boardId >> {}" , boardId);
 
         BoardCommentDto boardCommentDto = BoardCommentDto.builder()
@@ -40,7 +41,7 @@ public class BoardCommentService {
                 .createTime(LocalDateTime.now())
                 .updateTime(LocalDateTime.now())
                 .userId(principal.getName())
-                .boardId(Long.parseLong(boardCommentWriteDto.getBoardId()))
+                .boardId(boardCommentWriteDto.getBoardId())
                 .build();
 
         boardCommentDtoRepository.saveAndFlush(boardCommentDto);
@@ -48,10 +49,8 @@ public class BoardCommentService {
         return boardCommentDto;
     }
 
-    public void deleteComment(BoardCommentWriteDto boardCommentWriteDto, Principal principal) {
-
-
-        boardCommentDtoRepository.deleteByBoardIdAndId(Long.parseLong(boardCommentWriteDto.getBoardId())
-                                                                                , Long.parseLong(boardCommentWriteDto.getId()));
+    @Transactional
+    public void deleteComment(Long boardId, Long id) {
+        boardCommentDtoRepository.deleteByBoardIdAndId(boardId, id);
     }
 }

@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,21 +25,23 @@ public class BoardCommentController {
     @PostMapping(value = "/comment")
     public String insert(BoardCommentWriteDto boardCommentWriteDto, Principal principal, HttpServletRequest request){
 
-        boardCommentWriteDto.updateLocalIp(request.getRemoteAddr());
+        log.info("boardCommentWriteDto >> {}" , boardCommentWriteDto);
+
         BoardCommentDto boardCommentDto = boardCommentService.insertComment(
-                boardCommentWriteDto
+                BoardCommentWriteDto.builder()
+                        .comment(boardCommentWriteDto.getComment())
+                        .boardId(boardCommentWriteDto.getBoardId())
+                        .localIp(request.getRemoteAddr())
+                        .build()
                 , principal
         );
 
         return "redirect:/detail/" + boardCommentDto.getBoardId();
     }
 
-    @DeleteMapping(value="/comment")
-    public String delete(BoardCommentWriteDto boardCommentWriteDto, Principal principal){
-        boardCommentService.deleteComment(
-                boardCommentWriteDto
-                , principal
-        );
-        return "redirect:/detail/" + boardCommentWriteDto.getBoardId();
+    @GetMapping(value="/comment/{boardId}/{id}")
+    public String delete(@PathVariable Long boardId, @PathVariable Long id, Principal principal){
+        boardCommentService.deleteComment(boardId, id);
+        return "redirect:/detail/" + boardId;
     }
 }

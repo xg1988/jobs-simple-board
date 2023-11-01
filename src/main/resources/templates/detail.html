@@ -7,6 +7,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
+    <script>
+        const updateComments = function (boardId, id){
+            console.log("updateComment==")
+            console.log("boardId ==>" , boardId)
+            console.log("commentId ==>" , id)
+        }
+        const deleteComments = function (boardId, id){
+            console.log("deleteComment==")
+            console.log("boardId ==>" , boardId)
+            console.log("commentId ==>" , id)
+
+            if(confirm("댓글을 삭제 하시겠습니까?")){
+                location.href="/comment/"+boardId+ "/" +id;
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container" style="font-size: 12px;">
@@ -54,10 +70,14 @@
                         <h6 class="mb-1" th:text="${data.getUserId()}"></h6>
                         <small th:text="${data.getCreateTime() + '/'+data.getLocalIp()}"></small>
 
-                        <a class="btn btn-light btn-sm" role="button">수정</a>
-                        <a class="btn btn-light btn-sm" role="button">삭제</a>
+                    </div>
+                    <div class="d-flex w-100 justify-content-end">
+                        <span class="badge bg-light " style="color: black"  th:onclick="|updateComments('${data.getBoardId()}', '${data.getId()}')|">수정</span>
+                        <span class="badge bg-light " style="color: black" th:onclick="|deleteComments('${data.getBoardId()}', '${data.getId()}')|">삭제</span>
                     </div>
                     <p class="mb-1" th:text="${data.getComment()}"></p>
+
+
 <!--                    <small>And some small print.</small>-->
                 </a>
             </th:block>
