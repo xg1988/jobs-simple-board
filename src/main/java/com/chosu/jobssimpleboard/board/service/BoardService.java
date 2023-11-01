@@ -36,12 +36,14 @@ public class BoardService {
         log.info("selectList page >> {}", pageable.getPageNumber());
 
         Page<BoardArticleDto> list =boardArticleDtoRepository.findAllByOrderByIdDesc(pageable);
+
         list.forEach(boardArticleDto -> {
             String redisViewCount = redisBaseRepository.getValues(REDIS_CONFIG_VIEWCOUNT_KEY +boardArticleDto.getId());
             if(redisViewCount == null) redisViewCount = "0";
             int viewCount = Integer.parseInt(redisViewCount);
             log.info("redisBaseRepository >> viewCount >>{}" , viewCount);
         });
+
         return list;
     }
 

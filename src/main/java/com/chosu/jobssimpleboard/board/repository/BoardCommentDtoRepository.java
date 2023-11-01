@@ -8,4 +8,6 @@ import java.util.List;
 public interface BoardCommentDtoRepository extends JpaRepository<BoardCommentDto, Long> {
 
     public List<BoardCommentDto> findByBoardIdOrderByIdDesc(Long boardId);
+
+    public void deleteByBoardIdAndId(Long boardId, Long id);
 }

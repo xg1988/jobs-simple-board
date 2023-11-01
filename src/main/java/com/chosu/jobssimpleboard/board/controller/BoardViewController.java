@@ -42,10 +42,6 @@ public class BoardViewController {
         int totalElements = (int) list.getTotalElements();
         int pageNumber = list.getPageable().getPageNumber();
         int pageSize = list.getPageable().getPageSize();
-        log.info("totalPages >> {}", totalPages);
-        log.info("totalElements >> {}", totalElements);
-        log.info("pageNumber >> {}", pageNumber);
-        log.info("pageSize >> {}", pageSize);
 
         model.addAttribute("list", list);
         model.addAttribute("totalPages", totalPages-1);

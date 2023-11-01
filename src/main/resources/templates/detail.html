@@ -45,13 +45,17 @@
             <input type="hidden" name="boardId" th:value="${boardArticleDto.getId()}">
         </form>
 
-        <div class="list-group">
 
+        댓글 수 : <span th:text="${boardCommentDtos.size()}"></span>
+        <div class="list-group">
             <th:block th:each="data:${boardCommentDtos}">
                 <a href="#" class="list-group-item list-group-item-action" aria-current="true">
                     <div class="d-flex w-100 justify-content-between">
                         <h6 class="mb-1" th:text="${data.getUserId()}"></h6>
                         <small th:text="${data.getCreateTime() + '/'+data.getLocalIp()}"></small>
+
+                        <a class="btn btn-light btn-sm" role="button">수정</a>
+                        <a class="btn btn-light btn-sm" role="button">삭제</a>
                     </div>
                     <p class="mb-1" th:text="${data.getComment()}"></p>
 <!--                    <small>And some small print.</small>-->

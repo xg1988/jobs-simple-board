@@ -1,16 +1,19 @@
 package com.chosu.jobssimpleboard.board.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
 @Builder
 public class BoardCommentWriteDto {
 
+    private String id;
     private String comment;
-    private Long boardId;
+    private String boardId;
+    private String localIp;
+
+    public void updateLocalIp(String localIp){
+        this.localIp = localIp;
+    }
 }

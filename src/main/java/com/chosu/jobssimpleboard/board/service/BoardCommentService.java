@@ -30,17 +30,17 @@ public class BoardCommentService {
     public BoardCommentDto insertComment(BoardCommentWriteDto boardCommentWriteDto, Principal principal){
         log.info("boardCommentWriteDto >> {}" , boardCommentWriteDto);
 
-        Long boardId = boardCommentWriteDto.getBoardId();
+        Long boardId = Long.parseLong(boardCommentWriteDto.getBoardId());
         log.info("boardId >> {}" , boardId);
 
         BoardCommentDto boardCommentDto = BoardCommentDto.builder()
                 .comment(boardCommentWriteDto.getComment())
                 .boardTypeId(1L)
-                .localIp("127.0.0.1")
+                .localIp(boardCommentWriteDto.getLocalIp())
                 .createTime(LocalDateTime.now())
                 .updateTime(LocalDateTime.now())
                 .userId(principal.getName())
-                .boardId(boardCommentWriteDto.getBoardId())
+                .boardId(Long.parseLong(boardCommentWriteDto.getBoardId()))
                 .build();
 
         boardCommentDtoRepository.saveAndFlush(boardCommentDto);
@@ -48,4 +48,10 @@ public class BoardCommentService {
         return boardCommentDto;
     }
 
+    public void deleteComment(BoardCommentWriteDto boardCommentWriteDto, Principal principal) {
+
+
+        boardCommentDtoRepository.deleteByBoardIdAndId(Long.parseLong(boardCommentWriteDto.getBoardId())
+                                                                                , Long.parseLong(boardCommentWriteDto.getId()));
+    }
 }
