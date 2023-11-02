@@ -1,4 +1,4 @@
-package com.chosu.jobssimpleboard;
+package com.chosu.jobssimpleboard.board;
 
 import com.chosu.jobssimpleboard.board.dto.BoardArticleDto;
 import com.chosu.jobssimpleboard.board.dto.BoardWriteDto;

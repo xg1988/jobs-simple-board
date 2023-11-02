@@ -115,11 +115,6 @@ public class BoardViewController {
         return "redirect:/board";
     }
 
-    @GetMapping(value = "/type")
-    public String type(){
-        return "type";
-    }
-
     @GetMapping(value = "/updateLike/{boardId}")
     public String updateLike(@PathVariable String boardId, Principal principal) throws Exception {
         log.info("principal.getName() >>{}", principal.getName());

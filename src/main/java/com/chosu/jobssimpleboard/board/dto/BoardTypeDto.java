@@ -15,8 +15,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="simple_board_type")
 public class BoardTypeDto {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    @Column(name = "board_type_id", nullable = false)
+    private String id;
     @Column(nullable = false)
     private String boardTypeDesc;
     @Column(nullable = false)

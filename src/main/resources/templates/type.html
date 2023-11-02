@@ -11,20 +11,34 @@
 <div class="container-md" style="font-size: 12px;">
     <!-- Content here -->
     <h3>게시판 타입관리</h3>
-    <button type="button" class="btn btn-light btn-sm">메인</button>
+    <a class="btn btn-light btn-sm" th:href="@{'/'}">메인</a>
     <br/>
+
+    <form method="post" action="/type">
     <div class="input-group mb-3">
-        <input type="text" class="form-control" id="type" name="type" placeholder="게시판 타입을 입력하세요">
-        <button type="button" class="btn btn-light btn-sm">입력</button>
+        <input type="text" class="form-control" id="boardTypeId" name="boardTypeId" placeholder="게시판 타입 아이디를 입력하세요">
+        <input type="text" class="form-control" id="boardTypeDesc" name="boardTypeDesc" placeholder="게시판 타입을 입력하세요">
+        <input type="submit" class="btn btn-light btn-sm" th:value="입력">
     </div>
+    </form>
     <hr/>
     <ul>
+<!--
         <li>
             1 - 심플 게시판 <button type="button" class="btn btn-light btn-sm">삭제</button>
         </li>
         <li>
             2 - 이미지 게시판 <button type="button" class="btn btn-light btn-sm">삭제</button>
         </li>
+-->
+
+        <th:block th:each="data: ${boardTypeDtos}">
+            <li>
+                <span th:text="${data.getId() + '-' + data.getBoardTypeDesc()}"></span>
+                <a class="btn btn-light btn-sm" th:href="@{'/deleteType/'+${data.getId()}}" >삭제</a>
+            </li>
+        </th:block>
+
     </ul>
 </div>
 </body>

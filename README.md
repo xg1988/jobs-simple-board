@@ -17,6 +17,7 @@
 4. 아이디어
    * DynamoDB를 활용한 댓글 게시판
    * Redis를 활용한 동시성 처리
-
-
-
+5. kafka 활용
+   * kafka 설치, 실행, 설정(server.properties 변경)
+   * spring-kafka config, producer, consumer 설정
+   * 글, 댓글 등록시에 producer에 전송 확인

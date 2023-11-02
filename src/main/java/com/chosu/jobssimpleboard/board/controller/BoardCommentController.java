@@ -40,8 +40,8 @@ public class BoardCommentController {
     }
 
     @GetMapping(value="/comment/{boardId}/{id}")
-    public String delete(@PathVariable Long boardId, @PathVariable Long id, Principal principal){
-        boardCommentService.deleteComment(boardId, id);
+    public String delete(@PathVariable Long boardId, @PathVariable Long id, Principal principal) throws Exception {
+        boardCommentService.deleteComment(boardId, id, principal);
         return "redirect:/detail/" + boardId;
     }
 }

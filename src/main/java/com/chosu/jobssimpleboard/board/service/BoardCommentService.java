@@ -4,6 +4,7 @@ package com.chosu.jobssimpleboard.board.service;
 import com.chosu.jobssimpleboard.board.dto.BoardCommentDto;
 import com.chosu.jobssimpleboard.board.dto.BoardCommentWriteDto;
 import com.chosu.jobssimpleboard.board.repository.BoardCommentDtoRepository;
+import com.chosu.jobssimpleboard.kafka.KafkaCustomProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +18,11 @@ import java.util.List;
 public class BoardCommentService {
 
     private final BoardCommentDtoRepository boardCommentDtoRepository;
+    private final KafkaCustomProducer kafkaCustomProducer;
 
-    BoardCommentService(BoardCommentDtoRepository boardCommentDtoRepository){
+    BoardCommentService(BoardCommentDtoRepository boardCommentDtoRepository, KafkaCustomProducer kafkaCustomProducer){
         this.boardCommentDtoRepository = boardCommentDtoRepository;
+        this.kafkaCustomProducer = kafkaCustomProducer;
     }
 
     public List<BoardCommentDto> getComments(Long boardId){
@@ -44,13 +47,28 @@ public class BoardCommentService {
                 .boardId(boardCommentWriteDto.getBoardId())
                 .build();
 
-        boardCommentDtoRepository.saveAndFlush(boardCommentDto);
+
+
+        BoardCommentDto boardCommentResultDto = boardCommentDtoRepository.saveAndFlush(boardCommentDto);
+        kafkaCustomProducer.send("insertComment_"
+                + boardCommentResultDto.getBoardId()
+                + "_" +boardCommentResultDto.getId()
+                + "_" + boardCommentResultDto.getComment());
 
         return boardCommentDto;
     }
 
     @Transactional
-    public void deleteComment(Long boardId, Long id) {
+    public void deleteComment(Long boardId, Long id, Principal principal) throws Exception {
+        String userId = principal.getName();
+        log.info("session userId >> {}" , userId);
+
+        BoardCommentDto boardCommentDto = boardCommentDtoRepository.findByBoardIdAndIdAndUserId(boardId, id, userId);
+
+        if(boardCommentDto == null){
+            throw new Exception("댓글을 삭제할 수 없습니다.");
+        }
+
         boardCommentDtoRepository.deleteByBoardIdAndId(boardId, id);
     }
 }

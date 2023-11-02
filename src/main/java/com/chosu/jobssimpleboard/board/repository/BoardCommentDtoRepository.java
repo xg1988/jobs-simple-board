@@ -9,5 +9,7 @@ public interface BoardCommentDtoRepository extends JpaRepository<BoardCommentDto
 
     public List<BoardCommentDto> findByBoardIdOrderByIdDesc(Long boardId);
 
+    public BoardCommentDto findByBoardIdAndIdAndUserId(Long boardId, Long id, String userId);
+
     public void deleteByBoardIdAndId(Long boardId, Long id);
 }

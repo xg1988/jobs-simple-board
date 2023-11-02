@@ -48,6 +48,11 @@ public class BoardArticleDto {
         this.likeYnCount = likeYnCount;
     }
 
+
+    @OneToOne
+    @JoinColumn(name = "board_type_id")
+    private BoardTypeDto boardTypeDto;
+
 /*
     @OneToMany(mappedBy = "boardArticleDto", cascade = CascadeType.MERGE)
     private List<BoardArticleLikeDto> list = new ArrayList<>();
