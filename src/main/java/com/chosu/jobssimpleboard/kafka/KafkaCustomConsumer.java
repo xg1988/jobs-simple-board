@@ -40,6 +40,9 @@ public class KafkaCustomConsumer {
     public void consume(@Header(KafkaHeaders.RECEIVED_TOPIC) String topic, @Payload String payload){
         log.info("CONSUME TOPIC : "+topic);
         log.info("CONSUME PAYLOAD : "+payload);
+
+        log.info("CONSUME TOPIC : "+topic);
+        log.info("CONSUME PAYLOAD : "+payload);
     }
 
 }
