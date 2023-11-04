@@ -45,4 +45,13 @@ public class KafkaCustomConsumer {
         log.info("CONSUME PAYLOAD : "+payload);
     }
 
+    @KafkaListener(topics = "${spring.kafka.template.default-topic}")
+    public void consume2(@Header(KafkaHeaders.RECEIVED_TOPIC) String topic, @Payload String payload){
+        log.info("CONSUME2 TOPIC : "+topic);
+        log.info("CONSUME2 PAYLOAD : "+payload);
+
+        log.info("CONSUME2 TOPIC : "+topic);
+        log.info("CONSUME2 PAYLOAD : "+payload);
+    }
+
 }

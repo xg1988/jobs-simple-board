@@ -54,7 +54,11 @@ public class WebSecurityConfig {
                 .exceptionHandling().accessDeniedPage("/access-denied");
 
         http
-                .formLogin(Customizer.withDefaults())
+                .formLogin(httpSecurityFormLoginConfigurer -> {
+                    httpSecurityFormLoginConfigurer
+                            .loginPage("/login")
+                            .permitAll();
+                })
                 /*
                 .formLogin(httpSecurityFormLoginConfigurer -> {
                     httpSecurityFormLoginConfigurer

@@ -23,7 +23,7 @@ import java.util.Optional;
 public class BoardService {
 
     private final BoardArticleDtoRepository boardArticleDtoRepository;
-    private final BoardListRedisDtoRepository boardListRedisDtoRepository;
+
     private final RedisBaseRepository redisBaseRepository;
     private final UserDtoRepository userDtoRepository;
     private final BoardArticleLikeDtoRepository boardArticleLikeDtoRepository;
@@ -47,6 +47,7 @@ public class BoardService {
         return list;
     }
 
+    @Transactional
     public void saveBoard(String title, String content, String username, String localIp) {
 
         BoardArticleDto boardArticleDto = boardArticleDtoRepository.saveAndFlush(BoardArticleDto.builder()
