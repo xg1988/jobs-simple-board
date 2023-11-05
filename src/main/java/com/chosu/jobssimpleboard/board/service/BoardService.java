@@ -55,7 +55,8 @@ public class BoardService {
                         .viewCount(0)
                         .title(title)
                         .localIp(localIp)
-                        .userId(username)
+                        //.userId(username)
+                        .userDto(userDtoRepository.findById(username).get())
                         .createTime(LocalDateTime.now())
                         .updateTime(LocalDateTime.now())
                 .build());
@@ -113,10 +114,9 @@ public class BoardService {
                 .title(boardModifyDto.getTitle())
                 .id(boardModifyDto.getId())
                 .updateTime(LocalDateTime.now())
-
                 .createTime(boardArticleDto.getCreateTime())
                 .viewCount(boardArticleDto.getViewCount())
-                .userId(boardArticleDto.getUserId())
+                .userDto(boardArticleDto.getUserDto())
                 .localIp(boardArticleDto.getLocalIp())
                 .build());
     }

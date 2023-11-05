@@ -1,13 +1,13 @@
 package com.chosu.jobssimpleboard.board.dto;
 
 
-import lombok.*;
-import org.springframework.lang.Nullable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Builder
@@ -25,8 +25,13 @@ public class BoardArticleDto {
     private String title;
     @Column(nullable = false)
     private String contents;
-    @Column(nullable = false, name = "userId")
-    private String userId;
+    /*@Column(nullable = false, name = "userId")
+    private String userId;*/
+
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private UserDto userDto;
+
     @Column(nullable = false)
     private String localIp;
     @Column(nullable = false)

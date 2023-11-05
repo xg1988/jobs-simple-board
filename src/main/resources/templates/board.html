@@ -38,7 +38,7 @@
             <td >
                 <a th:href="@{'/detail/' + ${data.getId()}}" th:text="|[${data.getId()}] ${data.getTitle()}|"></a>
             </td>
-            <td th:text="${data.getUserId()}"></td>
+            <td th:text="${data.getUserDto().getUsername()}"></td>
             <td th:text="${data.getViewCount()}"></td>
             <td th:text="${#temporals.format(data.getUpdateTime(), 'yyyy.MM.dd HH:mm:ss')}"></td>
         </tr>

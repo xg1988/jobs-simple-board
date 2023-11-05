@@ -3,8 +3,11 @@ package com.chosu.jobssimpleboard.common.config;
 
 import com.chosu.jobssimpleboard.board.service.LoginService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,7 +20,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Slf4j
+@Order(1)
 public class WebSecurityConfig {
 
     private LoginService loginService;
@@ -36,6 +41,8 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        log.info("WebSecurityConfig filterChain");
+
         // csrf 비활성화 (사이트 요청 위조) ---> csrf 토큰이 없어도 서버는 응답
         // 스프링에서는 csrf 기본은 활성화 (보안 목적) ---> csrf 토큰을 url에 포함해야 서버는 응답
 
@@ -57,6 +64,9 @@ public class WebSecurityConfig {
                 .formLogin(httpSecurityFormLoginConfigurer -> {
                     httpSecurityFormLoginConfigurer
                             .loginPage("/login")
+                            .usernameParameter("userId")
+                            .passwordParameter("password")
+
                             .permitAll();
                 })
                 /*
