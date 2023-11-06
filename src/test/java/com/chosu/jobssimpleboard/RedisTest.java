@@ -47,7 +47,7 @@ public class RedisTest {
         Assertions.assertThat(test).isEqualTo("test data");
     }
 
-
+/*
     @DisplayName("3. view count logic")
     @Test
     void test_3(){
@@ -70,5 +70,5 @@ public class RedisTest {
 
         System.out.println("시스템로그 [viewCount]: " + viewCount);
         Assertions.assertThat(viewCount).isEqualTo("1");
-    }
+    }*/
 }

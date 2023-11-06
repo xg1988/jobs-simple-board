@@ -8,10 +8,11 @@ import javax.persistence.*;
 
 @Builder
 @AllArgsConstructor
-@Getter @Entity
-public class User {
+@Getter
+@Entity(name = "oauth_user_info")
+public class OAuthUserDto {
 
-    public User() {}
+    public OAuthUserDto() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,8 +37,8 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    public User update(String name, String picture) {
-        this.name = name;
+    public OAuthUserDto update(String name, String picture) {
+        this.nickname = name;
         this.picture = picture;
 
         return this;

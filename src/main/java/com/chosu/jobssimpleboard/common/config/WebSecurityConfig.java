@@ -94,7 +94,8 @@ public class WebSecurityConfig {
         return new ProviderManager(provider);
     }
 
+    @Bean
     public BCryptPasswordEncoder getbCryptPasswordEncoder() {
-        return bCryptPasswordEncoder;
+        return new BCryptPasswordEncoder();
     }
 }

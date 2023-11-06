@@ -1,11 +1,10 @@
 package com.chosu.jobssimpleboard.board.service;
 
-import com.chosu.jobssimpleboard.board.dto.OAuthNaverUserDto;
+import com.chosu.jobssimpleboard.board.dto.OAuthUserDto;
 import com.chosu.jobssimpleboard.board.dto.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.Map;
 
@@ -47,9 +46,9 @@ public class OAuthAttributes {
                 .build();
     }
 
-    public User toEntity() {
-        return OAuthNaverUserDto.builder()
-                .name(name)
+    public OAuthUserDto toEntity() {
+        return OAuthUserDto.builder()
+                .nickname(name)
                 .email(email)
                 .picture(picture)
                 .gender(gender)
