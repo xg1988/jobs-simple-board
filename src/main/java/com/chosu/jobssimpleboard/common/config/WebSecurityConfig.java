@@ -22,7 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-@Order(1)
+@Order(2)
 public class WebSecurityConfig {
 
     private LoginService loginService;

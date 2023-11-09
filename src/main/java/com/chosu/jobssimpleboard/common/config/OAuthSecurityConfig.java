@@ -11,12 +11,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
+/*@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Order(1)
+@Order(1)*/
 public class OAuthSecurityConfig {
-    private final OAuthUserService oAuthUserService;
+    //private final OAuthUserService oAuthUserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,8 +27,8 @@ public class OAuthSecurityConfig {
                 .anyRequest().authenticated().and()
                 .logout().logoutSuccessUrl("/").and()
                 .oauth2Login()
-                .userInfoEndpoint()
-                .userService(oAuthUserService);
+                .userInfoEndpoint();
+                //.userService(oAuthUserService);
         return http.build();
     }
 }
