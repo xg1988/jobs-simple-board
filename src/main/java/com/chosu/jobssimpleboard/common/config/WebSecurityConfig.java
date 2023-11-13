@@ -24,8 +24,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Slf4j
 public class WebSecurityConfig {
 
-    private LoginService loginService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final LoginService loginService;
+    //private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
