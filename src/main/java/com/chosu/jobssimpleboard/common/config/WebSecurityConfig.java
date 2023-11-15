@@ -2,6 +2,7 @@ package com.chosu.jobssimpleboard.common.config;
 
 
 import com.chosu.jobssimpleboard.board.service.LoginService;
+import com.chosu.jobssimpleboard.board.service.OAuthLoginService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class WebSecurityConfig {
     private final LoginService loginService;
     //private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final OAuthLoginService oAuthLoginService;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -82,6 +84,9 @@ public class WebSecurityConfig {
                             .loginProcessingUrl("");
                 })*/
                 .httpBasic(Customizer.withDefaults());
+
+        http.oauth2Login()
+                .userInfoEndpoint().userService(oAuthLoginService);
 
         return http.build();
     }
