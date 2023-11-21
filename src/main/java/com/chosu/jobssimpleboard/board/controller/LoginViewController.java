@@ -45,8 +45,8 @@ public class LoginViewController {
         return "admin-dashboard";
     }
 
-    @GetMapping(value = "/login")
-    public String login(){
-        return "login";
+    @GetMapping(value = "/login-form")
+    public String loginForm(){
+        return "login-form";
     }
 }

@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 public class OAuthLoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.debug("userRequest.getAccessToken().getTokenValue() >>{}", userRequest.getAccessToken().getTokenValue());
+        String provider = userRequest.getClientRegistration().getRegistrationId();    //google
+        log.info("provider : {}", provider);
+
 
 
         return null;

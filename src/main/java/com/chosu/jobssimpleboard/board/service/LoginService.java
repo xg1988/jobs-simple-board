@@ -18,9 +18,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class LoginService implements UserDetailsService {
-    private UserDtoRepository userDtoRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    private final UserDtoRepository userDtoRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserDto signup(
             String userId
